@@ -1,6 +1,6 @@
 # modifications to original q
 
-* `-ql` and `-qo` are automatically added to `flag' similar to `glog`
+* `-ql` and `-qo` are automatically added to `flag` similar to `glog`
 * `-ql` can be used to set debug `level`:
   1. `all` which prints all q.Q() output.
   2. `pkg` which prints q.Q() in packages named `pkg`
