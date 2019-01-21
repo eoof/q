@@ -6,7 +6,9 @@ package q
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
+	"strings"
 )
 
 // nolint: gochecknoglobals
@@ -17,8 +19,22 @@ var (
 	}
 )
 
+var Level, Output string
+
+func init() {
+	flag.StringVar(&Level, "ql", "", "all,pkg,func")
+	flag.StringVar(&Output, "qo", "q", "stdout,stderr,file")
+}
+
 // Q pretty-prints the given arguments to the $TMPDIR/q log file.
 func Q(v ...interface{}) {
+	if Level == "" {
+		return
+	}
+	qq(v...)
+}
+
+func qq(v ...interface{}) {
 	std.mu.Lock()
 	defer std.mu.Unlock()
 
@@ -33,6 +49,9 @@ func Q(v ...interface{}) {
 	funcName, file, line, err := getCallerInfo()
 	if err != nil {
 		std.output(args...) // no name=value printing
+		return
+	}
+	if Level != "all" && !strings.Contains(funcName, Level) {
 		return
 	}
 

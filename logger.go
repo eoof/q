@@ -72,12 +72,31 @@ func (l *logger) shouldPrintHeader(funcName, file string) bool {
 
 // flush writes the logger's buffer to disk.
 func (l *logger) flush() (err error) {
+	var f *os.File
 	path := filepath.Join(os.TempDir(), "q")
-	f, err := os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
-	if err != nil {
-		return fmt.Errorf("failed to open %q: %v", path, err)
+	switch Output {
+	case "stderr":
+		f = os.Stderr
+	case "stdout":
+		f = os.Stdout
+	default:
+		path = filepath.Join(os.TempDir(), Output)
+	}
+	if f != os.Stderr && f != os.Stdout {
+		f, err = os.OpenFile(path, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0600)
+		if err != nil {
+			return fmt.Errorf("failed to open %q: %v", path, err)
+		}
 	}
 	defer func() {
+		if f == os.Stderr {
+			l.lastWrite = time.Now()
+			return
+		}
+		if f == os.Stdout {
+			l.lastWrite = time.Now()
+			return
+		}
 		if cerr := f.Close(); err == nil {
 			err = cerr
 		}

@@ -136,7 +136,7 @@ func formatArgs(args ...interface{}) []string {
 // getCallerInfo returns the name, file, and line number of the function calling
 // q.Q().
 func getCallerInfo() (funcName, file string, line int, err error) {
-	const callDepth = 2 // user code calls q.Q() which calls std.log().
+	const callDepth = 3 //was 2, now 3, q.QQ->q.Q->std.log()
 	pc, file, line, ok := runtime.Caller(callDepth)
 	if !ok {
 		return "", "", 0, errors.New("failed to get info about the function calling q.Q")
