@@ -1,6 +1,6 @@
 # q
 
-See modifications done in this fork in [example/README.md](https://github.com/eoof/q/example/README.md)
+See modifications done in this fork in [example/README.md](https://github.com/eoof/q/blob/master/example/README.md)
 
 [![CircleCI](https://circleci.com/gh/y0ssar1an/q/tree/master.svg?style=svg)](https://circleci.com/gh/y0ssar1an/q/tree/master)
 [![GoDoc](https://godoc.org/github.com/y0ssar1an/q?status.svg)](https://godoc.org/github.com/y0ssar1an/q)
